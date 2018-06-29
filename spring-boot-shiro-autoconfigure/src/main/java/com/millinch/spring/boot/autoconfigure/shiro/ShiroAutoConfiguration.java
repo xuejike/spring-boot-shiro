@@ -123,25 +123,25 @@ public class ShiroAutoConfiguration {
         }
         return realm;
     }
-
-    @Bean(name = "shiroCacheManager")
-    @ConditionalOnClass(name = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
-    @ConditionalOnMissingBean(name = "shiroCacheManager")
-    public CacheManager ehcacheManager() {
-        EhCacheManager ehCacheManager = new EhCacheManager();
-        ShiroProperties.Ehcache ehcache = properties.getEhcache();
-        if (ehcache.getCacheManagerConfigFile() != null) {
-            ehCacheManager.setCacheManagerConfigFile(ehcache.getCacheManagerConfigFile());
-        }
-        return ehCacheManager;
-    }
-    @Bean(name = "shiroCacheManager")
-    @ConditionalOnMissingBean(name = "shiroCacheManager")
-    @ConditionalOnBean(org.springframework.cache.CacheManager.class)
-    public CacheManager springCache(@Autowired  org.springframework.cache.CacheManager manager){
-        SpringShiroCacheManager cacheManager = new SpringShiroCacheManager(manager);
-        return cacheManager;
-    }
+//
+//    @Bean(name = "shiroCacheManager")
+//    @ConditionalOnClass(name = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
+//    @ConditionalOnMissingBean(name = "shiroCacheManager")
+//    public CacheManager ehcacheManager() {
+//        EhCacheManager ehCacheManager = new EhCacheManager();
+//        ShiroProperties.Ehcache ehcache = properties.getEhcache();
+//        if (ehcache.getCacheManagerConfigFile() != null) {
+//            ehCacheManager.setCacheManagerConfigFile(ehcache.getCacheManagerConfigFile());
+//        }
+//        return ehCacheManager;
+//    }
+//    @Bean(name = "shiroCacheManager")
+//    @ConditionalOnMissingBean(name = "shiroCacheManager")
+//    @ConditionalOnBean(org.springframework.cache.CacheManager.class)
+//    public CacheManager springCache(@Autowired  org.springframework.cache.CacheManager manager){
+//        SpringShiroCacheManager cacheManager = new SpringShiroCacheManager(manager);
+//        return cacheManager;
+//    }
     @Bean
     @ConditionalOnMissingBean(Cookie.class)
     public Cookie rememberMeCookie() {
