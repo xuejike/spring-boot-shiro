@@ -44,8 +44,8 @@ public class ShiroConfiguration {
     /**
      * (基于内存的)用户授权信息Cache
      */
-    @Bean(name = "cacheManager")
-    @ConditionalOnMissingBean(name = "cacheManager")
+    @Bean(name = "shiroCacheManager")
+    @ConditionalOnMissingBean(name = "shiroCacheManager")
     @ConditionalOnMissingClass(value = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
     public CacheManager cacheManager() {
         return new MemoryConstrainedCacheManager();
