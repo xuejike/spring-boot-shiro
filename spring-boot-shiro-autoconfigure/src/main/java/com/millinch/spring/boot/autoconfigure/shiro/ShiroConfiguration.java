@@ -46,13 +46,13 @@ public class ShiroConfiguration {
      */
     @Bean(name = "shiroCacheManager")
     @ConditionalOnMissingBean(name = "shiroCacheManager")
-    @ConditionalOnMissingClass(value = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
+    @ConditionalOnMissingClass(value = {"org.apache.shiro.cache.ehcache.EhCacheManager","org.springframework.cache.CacheManager"})
     public CacheManager cacheManager() {
         return new MemoryConstrainedCacheManager();
     }
 
     @Bean(name = "securityManager")
-    @DependsOn(value = {"cacheManager", "rememberMeManager", "mainRealm"})
+    @DependsOn(value = {"shiroCacheManager", "rememberMeManager", "mainRealm"})
     public DefaultSecurityManager securityManager(Realm realm, RememberMeManager rememberMeManager,
                                                   CacheManager cacheManager, SessionManager sessionManager) {
         DefaultSecurityManager sm = new DefaultWebSecurityManager();
