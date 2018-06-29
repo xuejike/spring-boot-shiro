@@ -126,9 +126,9 @@ public class ShiroAutoConfiguration {
         return realm;
     }
 
-    @Bean(name = "cacheManager")
+    @Bean(name = "shiroCacheManager")
     @ConditionalOnClass(name = {"org.apache.shiro.cache.ehcache.EhCacheManager"})
-    @ConditionalOnMissingBean(name = "cacheManager")
+    @ConditionalOnMissingBean(name = "shiroCacheManager")
     public CacheManager ehcacheManager() {
         EhCacheManager ehCacheManager = new EhCacheManager();
         ShiroProperties.Ehcache ehcache = properties.getEhcache();
@@ -211,7 +211,7 @@ public class ShiroAutoConfiguration {
     }
 
     @Bean
-    @DependsOn(value = {"cacheManager", "sessionDAO"})
+    @DependsOn(value = {"shiroCacheManager", "sessionDAO"})
     public WebSessionManager sessionManager(CacheManager cacheManager, SessionDAO sessionDAO) {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setCacheManager(cacheManager);
@@ -224,7 +224,7 @@ public class ShiroAutoConfiguration {
 
     @Bean(name = "credentialsMatcher")
     @ConditionalOnMissingBean
-    @DependsOn("cacheManager")
+    @DependsOn("shiroCacheManager")
     public CredentialsMatcher credentialsMatcher(CacheManager cacheManager) {
         RetryLimitHashedCredentialsMatcher credentialsMatcher = new RetryLimitHashedCredentialsMatcher(cacheManager);
         credentialsMatcher.setHashAlgorithmName(properties.getHashAlgorithmName());
