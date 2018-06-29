@@ -1,6 +1,7 @@
 package com.millinch.spring.boot.autoconfigure.shiro;
 
 import com.millinch.spring.boot.autoconfigure.shiro.annotation.EnableShiroWebSupport;
+import com.millinch.spring.boot.autoconfigure.shiro.cache.SpringShiroCacheManager;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
@@ -27,10 +28,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.apache.shiro.web.session.mgt.WebSessionManager;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
+import org.springframework.boot.autoconfigure.condition.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -137,7 +135,13 @@ public class ShiroAutoConfiguration {
         }
         return ehCacheManager;
     }
-
+    @Bean(name = "shiroCacheManager")
+    @ConditionalOnMissingBean(name = "shiroCacheManager")
+    @ConditionalOnBean(org.springframework.cache.CacheManager.class)
+    public CacheManager springCache(@Autowired  org.springframework.cache.CacheManager manager){
+        SpringShiroCacheManager cacheManager = new SpringShiroCacheManager(manager);
+        return cacheManager;
+    }
     @Bean
     @ConditionalOnMissingBean(Cookie.class)
     public Cookie rememberMeCookie() {
